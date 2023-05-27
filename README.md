@@ -18,7 +18,12 @@ Documentation and Presentation: Document your program's functionality, and code 
 <Student1 first name Student 1 last name> <Student 1 ID>-<Student2 first name Student 2 last name> <Student 2 ID> - <Student3 first name Student 3 last name> <Student 3 ID>.zip 
 
 
-
+Pip Packages needed:
+pandas
+scikit-learn
+requests
+graphviz
+matplotlib
 
 How to run project:
 Use any python compiler to execute python script with included dataset 
