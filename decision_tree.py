@@ -28,21 +28,36 @@ import graphviz
 # Est (WaitEstimate): host wait estimate                0: 0-10     1: 10-30    2: 30-60    3: >60
 # WillWait (output):                                    0: No   1: Yes
 
-dataset = np.array([
-    [1, 0, 0, 1, 1, 2, 0, 1, 0, 0, 1],
-    [1, 0, 0, 1, 2, 0, 0, 0, 2, 2, 0],
-    [0, 1, 0, 0, 1, 0, 0, 0, 3, 0, 1],
-    [1, 0, 1, 1, 2, 0, 1, 0, 2, 1, 1],
-    [1, 0, 1, 0, 2, 2, 0, 1, 0, 3, 0],
-    [0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-    [0, 1, 0, 0, 0, 0, 1, 0, 3, 0, 0],
-    [0, 0, 0, 1, 1, 1, 1, 1, 2, 0, 1],
-    [0, 1, 1, 0, 2, 0, 1, 0, 3, 3, 0],
-    [1, 1, 1, 1, 2, 2, 0, 1, 1, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
-    [1, 1, 1, 1, 2, 0, 0, 0, 3, 2, 1],
-])
+# dataset = np.array([
+#     [1, 0, 0, 1, 1, 2, 0, 1, 0, 0, 1],
+#     [1, 0, 0, 1, 2, 0, 0, 0, 2, 2, 0],
+#     [0, 1, 0, 0, 1, 0, 0, 0, 3, 0, 1],
+#     [1, 0, 1, 1, 2, 0, 1, 0, 2, 1, 1],
+#     [1, 0, 1, 0, 2, 2, 0, 1, 0, 3, 0],
+#     [0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+#     [0, 1, 0, 0, 0, 0, 1, 0, 3, 0, 0],
+#     [0, 0, 0, 1, 1, 1, 1, 1, 2, 0, 1],
+#     [0, 1, 1, 0, 2, 0, 1, 0, 3, 3, 0],
+#     [1, 1, 1, 1, 2, 2, 0, 1, 1, 1, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+#     [1, 1, 1, 1, 2, 0, 0, 0, 3, 2, 1],
+# ])
 # print(dataset)
+
+dataset = np.array([
+    ['yes', 'no', 'no', 'yes', 'some', '$$$', 'no', 'yes', 'french', '0-10', 'yes'],
+    ['yes', 'no', 'no', 'yes', 'full', '$', 'no', 'no', 'thai', '30-60', 'no'],
+    ['no', 'yes', 'no', 'no', 'some', '$', 'no', 'no', 'burger', '0-10', 'yes'],
+    ['yes', 'no', 'yes', 'yes', 'full', '$', 'yes', 'no', 'thai', '10-30', 'yes'],
+    ['yes', 'no', 'yes', 'no', 'full', '$$$', 'no', 'yes', 'french', '>60', 'no'],
+    ['no', 'yes', 'no', 'yes', 'some', '$$', 'yes', 'yes', 'italian', '0-10', 'yes'],
+    ['no', 'yes', 'no', 'no', 'none', '$', 'yes', 'no', 'burger', '0-10', 'no'],
+    ['no', 'no', 'no', 'yes', 'yes', '$$', 'yes', 'yes', 'thai', '0-10', 'yes'],
+    ['no', 'yes', 'yes', 'no', 'full', '$', 'yes', 'no', 'burger', '>60', 'no'],
+    ['yes', 'yes', 'yes', 'yes', 'full', '$$$', 'no', 'yes', 'italian', '10-30', 'no'],
+    ['no', 'no', 'no', 'no', 'none', '$', 'no', 'no', 'thai', '0-10', 'no'],
+    ['yes', 'yes', 'yes', 'yes', 'full', '$', 'no', 'no', 'burger', '30-60', 'yes'],
+])
 
 df2 = pd.DataFrame(dataset,
                    columns=['Alt', 'Bar', 'Fri', 'Hun', 'Pat', 'Price', 'Rain', 'Res', 'Type', 'Est', 'WillWait'])
@@ -54,6 +69,15 @@ y = dataset[:, 10]
 
 le = preprocessing.LabelEncoder()
 X[:, 0] = le.fit_transform(X[:, 0])
+X[:, 1] = le.fit_transform(X[:, 1])
+X[:, 2] = le.fit_transform(X[:, 2])
+X[:, 3] = le.fit_transform(X[:, 3])
+X[:, 4] = le.fit_transform(X[:, 4])
+X[:, 5] = le.fit_transform(X[:, 5])
+X[:, 6] = le.fit_transform(X[:, 6])
+X[:, 7] = le.fit_transform(X[:, 7])
+X[:, 8] = le.fit_transform(X[:, 8])
+X[:, 9] = le.fit_transform(X[:, 9])
 y = le.fit_transform(y)
 
 dtc = tree.DecisionTreeClassifier(criterion="entropy")
@@ -67,7 +91,7 @@ tree.plot_tree(dtc)
 
 dot_data = tree.export_graphviz(dtc, out_file=None,
 feature_names=['Alt', 'Bar', 'Fri', 'Hun', 'Pat', 'Price', 'Rain', 'Res', 'Type', 'Est'],
-# class_names=le.classes_,
+class_names=le.classes_,
 filled=True, rounded=True,
 special_characters=True)
 graph = graphviz.Source(dot_data)
