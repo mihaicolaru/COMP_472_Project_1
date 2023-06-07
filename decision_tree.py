@@ -1,6 +1,7 @@
 # written by:
 # Mihai Olaru   40111734
-# add your names and id
+# Amir Cherif   40047635
+# Amish Patel   40044279
 
 # TODO: includes
 import numpy as np
